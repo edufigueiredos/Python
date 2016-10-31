@@ -1,0 +1,50 @@
+import struct
+
+try:
+    def ordenar(arquivo_ordenado, posicao_inicial, posicao_final):
+
+        lista_setor = []
+        while posicao_inicial <= posicao_final:
+            lista_setor.append(arquivo_ordenado[posicao_inicial])
+            posicao_inicial += 1
+        lista_setor.sort()
+        return lista_setor
+
+
+    def imprimir(imprimir_arquivo):
+
+        print(imprimir_arquivo)
+
+
+    def ler(arquivo, n_registros):
+        lista_principal = []
+        for linha_lida in range(n_registros-1):
+            lista_vazia = []
+            inteiro = struct.unpack("i", arquivo.read(4))[0]
+            flutuante1 = struct.unpack("f", arquivo.read(4))[0]
+            flutuante2 = struct.unpack("f", arquivo.read(4))[0]
+
+            lista_vazia.append(inteiro)
+            lista_vazia.append("%.2f" % flutuante1)
+            lista_vazia.append("% .2f" % flutuante2)
+
+            lista_principal.append(lista_vazia)
+        return lista_principal
+
+
+    nome_arquivo = str(input("Informe o nome do arquivo binário: "))
+
+    with open(nome_arquivo, "rb") as arquivo:
+        arquivo.seek(0, 2)
+        n_registros = int(arquivo.tell() / 12)
+        arquivo.seek(0,0)
+        arquivo_desordenado = ler(arquivo, n_registros)
+        imprimir(arquivo_desordenado)
+
+        posicao_inicial = int(input("Informe a posição inicial do setor a ser processado: "))-1
+        posicao_final = int(input("Informe a posição final do setor a ser processada: "))-1
+        arquivo_no_setor_ordenado = ordenar(arquivo_desordenado, posicao_inicial, posicao_final)
+
+        imprimir(arquivo_no_setor_ordenado)
+except IOError:
+    print("Houve um erro inesperado")
