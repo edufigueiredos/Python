@@ -1,0 +1,27 @@
+import struct
+
+def buscar(nome_arquivo, numero):
+    posicao = int(-1)
+    numero = int(numero)
+    with open(nome_arquivo, "rb") as arquivo:
+        arquivo.seek(0, 2)
+        tamanho = int(arquivo.tell() / 4)
+        arquivo.seek(0, 0)
+        for contador in range(tamanho):
+            inteiro = struct.unpack("i", arquivo.read(4))[0]
+            posicao_cursor = arquivo.tell()
+            if inteiro == numero:
+                posicao = posicao_cursor // 4
+    return posicao
+
+nome_arquivo = input("Informe o nome do aqruivo binário de números: ")
+arquivo = open(nome_arquivo, "rb")
+numero = input("Favor informar o valor a ser encontrado (-1 para sair):")
+while numero != ("-1"):
+    posicao = buscar(nome_arquivo, numero)
+    if posicao == (int(-1)):
+        print("O número não foi encontrado.")
+    else:
+        print("O número está na posição ", posicao)
+    numero = input("Favor informar o valor a ser encontrado (-1 para sair):")
+arquivo.close()
