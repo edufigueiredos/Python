@@ -1,0 +1,47 @@
+def copiar_para_temporario(arquivo_original):
+    temporario = open("temporario.txt", "w")
+    for linhas in arquivo_original:
+        temporario.write(linhas)
+    temporario.close()
+    return None
+
+
+def ler_sinonimos(nome_arquivo_sinonimo):
+    dicionario = {}
+    with open(nome_arquivo_sinonimo) as sinonimos:
+        for linha in sinonimos:
+            primeira_palavra = linha.split(" ")[0]
+            segunda_palavra = linha.split(" ")[1]
+            dicionario[primeira_palavra] = segunda_palavra.replace("\n", "")
+    return dicionario
+
+
+def quantidade_linhas(arquivo_texto):
+    with open(arquivo_texto, "r") as texto:
+        numero_linhas = texto.readlines()
+        quantidade = int(len(numero_linhas))
+        return quantidade
+
+
+def processar_texto(sinonimos, nome_de_texto):
+    variavel_sinonimos = ler_sinonimos(sinonimos)
+    numero_de_linhas = quantidade_linhas(nome_de_texto)
+    ler_linha = 0
+    for linhas_arquivo in range(numero_de_linhas):
+        arquivo_texto = open(nome_de_texto)
+        linha_do_arquivo = arquivo_texto.readlines()[ler_linha]
+        arquivo_texto.close()
+        for palavras in variavel_sinonimos:
+            linha_do_arquivo = linha_do_arquivo.replace(palavras, variavel_sinonimos[palavras])
+        texto_temporario = open("texto_temporario.txt", "a")
+        texto_temporario.write(linha_do_arquivo)
+        texto_temporario.close()
+        ler_linha += 1
+
+    return None
+
+
+
+sinonimos = input("Digite o nome do arquivo de sinonimos: ")
+arquivo = input("Digite o nome do arquivo de texto: ")
+processar_texto(sinonimos, arquivo)
