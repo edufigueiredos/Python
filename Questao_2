@@ -1,0 +1,59 @@
+def remover_repetidas(palavra_cores):
+    indice = 0
+    while indice < len(palavra_cores):
+        if palavra_cores.count(palavra_cores[indice]) > 1:
+           palavra_cores.remove(palavra_cores[indice])
+        else:
+            indice += 1
+
+    return(palavra_cores)
+
+def ler_tamanho_carta():
+    carta = open("carta.txt")
+    ler_linhas = carta.readlines()
+    carta.close()
+    quantas_linhas = len(ler_linhas)
+    return int(quantas_linhas)
+
+
+def ler_carta(linha):
+    carta = open("carta.txt")
+    carta_lida_inteira = carta.readlines()
+    carta_lida_linha = carta_lida_inteira[linha]
+    return carta_lida_linha
+
+def ler_cores():
+    cores = open("cores.txt")
+    cores_lida = cores.read()
+    cores.close()
+    return cores_lida
+
+def palavras_iguais(arquivo_cores):
+    contador_linha = 0
+    contador_coluna = 0
+    aux_for_carta_contador = 0
+    aux_for_cores = 0
+    aux_for_cartas = 0
+    linha_carta = ler_tamanho_carta()
+    palavra_cores = arquivo_cores.split()
+    remover_repetidas(palavra_cores)
+
+    for aux_for_carta_contador in range(linha_carta):
+        linha_carta_quebrada = ler_carta(contador_linha)
+        contador_linha += 1
+        contador_coluna = 0
+        palavra_carta = linha_carta_quebrada.split()
+        for aux_for_cartas in palavra_carta:
+            contador_coluna += 1
+            for aux_for_cores in palavra_cores:
+                if aux_for_cores == aux_for_cartas:
+                    print(aux_for_cores, ",", contador_linha, ",", contador_coluna)
+
+
+    return None
+
+
+
+
+
+palavras_iguais(ler_cores())
